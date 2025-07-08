@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow border-0 rounded-4 px-4 py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-gradient mb-0">
+        <i class="bi bi-bell-fill me-2"></i>Notifications
+      </h2>
+      {% if notifications %}
+      <a href="{{ url_for('mark_all_notifications_read') }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+        <i class="bi bi-check2-all me-1"></i>Mark All as Read
+      </a>
+      {% endif %}
+    </div>
+
+    {% if notifications %}
+    <ul class="list-group list-group-flush">
+      {% for notification in notifications %}
+      <li class="list-group-item d-flex justify-content-between align-items-start 
+        {% if not notification.is_read %}bg-light border-start border-4 border-warning{% endif %}">
+        
+        <div class="ms-2 me-auto">
+          <div class="fw-bold text-dark">{{ notification.message }}</div>
+          <small class="text-muted">{{ notification.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+        </div>
+
+        {% if not notification.is_read %}
+        <a href="{{ url_for('mark_notification_read', notification_id=notification.id) }}"
+           class="btn btn-sm btn-outline-primary rounded-pill">
+          <i class="bi bi-eye me-1"></i>Mark as Read
+        </a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="alert alert-info text-center mt-3">
+      <i class="bi bi-info-circle me-1"></i>No notifications found.
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

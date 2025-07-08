@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Pending Posts - Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5 p-4 bg-white rounded shadow-lg">
+  <h2 class="text-center text-primary fw-bold mb-4">
+    <i class="bi bi-clock-history me-2"></i>Pending Posts for Approval
+  </h2>
+
+  {% if posts %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle text-center shadow-sm border rounded">
+        <thead class="table-primary">
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+          <tr>
+            <td><strong>{{ post.title }}</strong></td>
+            <td>{{ post.author.name }}</td>
+            <td>{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              <div class="d-flex justify-content-center gap-2">
+                <form action="{{ url_for('approve_post', post_id=post.id) }}" method="POST">
+                  <button type="submit" class="btn btn-sm btn-success px-3">
+                    <i class="bi bi-check-circle me-1"></i>Approve
+                  </button>
+                </form>
+                <form action="{{ url_for('reject_post', post_id=post.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to reject this post?');">
+                  <button type="submit" class="btn btn-sm btn-danger px-3">
+                    <i class="bi bi-x-circle me-1"></i>Reject
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center" role="alert">
+      <i class="bi bi-info-circle-fill me-2"></i>No pending posts found.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

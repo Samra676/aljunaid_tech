@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Edit Category{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow border-0 rounded-4 px-4 py-5">
+    <h2 class="text-center text-gradient mb-4">
+      <i class="bi bi-tags-fill me-2"></i>Edit Category
+    </h2>
+
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      <!-- Category Name -->
+      <div class="mb-4">
+        <label class="form-label fw-semibold">{{ form.name.label }}</label>
+        {{ form.name(class="form-control form-control-lg shadow-sm rounded-3", placeholder="Enter category name") }}
+        {% for error in form.name.errors %}
+          <div class="text-danger mt-1"><small>{{ error }}</small></div>
+        {% endfor %}
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm">
+          <i class="bi bi-save2 me-1"></i>Update Category
+        </button>
+        <a href="{{ url_for('manage_categories') }}" class="btn btn-outline-secondary px-4 py-2 ms-3 rounded-pill">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

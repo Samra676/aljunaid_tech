@@ -1,0 +1,49 @@
+<!-- templates/login.html -->
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">Login to Your Account</h3>
+                    <form method="POST" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">{{ form.email.label }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-envelope-fill"></i>
+                                </span>
+                                {{ form.email(class="form-control", placeholder="Enter your email") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">{{ form.password.label }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock-fill"></i>
+                                </span>
+                                {{ form.password(class="form-control", placeholder="Enter your password") }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-success btn-lg") }}
+                        </div>
+                    </form>
+                    <hr class="my-4">
+                    <p class="text-center">
+                        Don't have an account?
+                        <a href="{{ url_for('register') }}">Register here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

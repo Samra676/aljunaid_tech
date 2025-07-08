@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background-color:rgb(177, 204, 247);
+  }
+
+  .register-container {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+  }
+
+  .register-card {
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  .auth-logo {
+    position: absolute;
+    top: -35px;
+    left: 20px;
+    width: 60px;
+    height: 70px;
+    background: url('https://cdn-icons-png.flaticon.com/512/2917/2917990.png') no-repeat center center;
+    background-size: contain;
+  }
+
+  .form-label {
+    font-weight: 500;
+  }
+
+  .btn-register {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: background 0.3s ease;
+  }
+
+  .btn-register:hover {
+    background-color: #0b5ed7;
+  }
+
+  .input-group-text {
+    background-color: #e9ecef;
+  }
+</style>
+
+<div class="register-container">
+  <div class="register-card">
+    <div class="auth-logo"></div>
+    <h3 class="text-center mb-4">Create Your Account</h3>
+
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+          {{ form.name(class="form-control", placeholder="Full Name") }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+          {{ form.email(class="form-control", placeholder="Email Address") }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        {{ form.password.label(class="form-label") }}
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+          {{ form.password(class="form-control", placeholder="Password") }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        {{ form.confirm.label(class="form-label") }}
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
+          {{ form.confirm(class="form-control", placeholder="Confirm Password") }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        {{ form.role.label(class="form-label") }}
+        {{ form.role(class="form-select") }}
+      </div>
+
+      {{ form.submit(class="btn btn-primary btn-register w-100") }}
+    </form>
+
+    <p class="mt-3 text-center">
+      Already have an account?
+      <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

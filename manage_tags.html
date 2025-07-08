@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Manage Tags{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-lg border-0 rounded-4 px-4 py-5">
+
+    <!-- Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-gradient mb-0">
+        <i class="bi bi-tags-fill me-2"></i>Manage Tags
+      </h2>
+      <a href="{{ url_for('create_tag') }}" class="btn btn-success px-4 rounded-pill">
+        <i class="bi bi-plus-circle me-1"></i> New Tag
+      </a>
+    </div>
+
+    {% if tags %}
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle text-center">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Tag Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tag in tags %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ tag.name }}</td>
+            <td>
+              <a href="{{ url_for('edit_tag', tag_id=tag.id) }}" class="btn btn-sm btn-outline-warning me-2">
+                <i class="bi bi-pencil-square"></i> Edit
+              </a>
+              <a href="{{ url_for('delete_tag', tag_id=tag.id) }}" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash"></i> Delete
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="alert alert-info text-center">No tags found.</div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

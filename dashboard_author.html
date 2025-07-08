@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Author Dashboard{% endblock %}
+
+{% block content %}
+<!-- Google Font for Handwriting & Bootstrap Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  body {
+    background: linear-gradient(to right,rgb(102, 230, 223),rgb(74, 201, 63));
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .animated-welcome {
+    font-family: 'Dancing Script', cursive;
+    font-size: 50px;
+    font-weight: bold;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    margin: 80px auto 40px;
+    animation: typing 3s steps(30, end) forwards;
+  }
+
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  .dashboard-container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    margin: 20px auto 40px;
+    max-width: 900px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-custom {
+    background-color: #007bff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 500;
+    color: #fff;
+    transition: background 0.3s ease;
+    border: none;
+  }
+  .btn-custom:hover {
+    background-color: #0056b3;
+  }
+
+  .list-group-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    transition: background 0.2s ease;
+  }
+  .list-group-item:hover {
+    background-color: #f9f9f9;
+  }
+
+  .comment-user {
+    font-weight: 600;
+    color: #007bff;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-top: 40px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .list-group {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+</style>
+
+<div class="animated-welcome">👋 Welcome, {{ current_user.name }}!</div>
+
+<div class="container dashboard-container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">📚 Your Blog Posts</h2>
+    <a href="{{ url_for('create_post') }}" class="btn btn-custom">
+      <i class="bi bi-plus-circle me-1"></i> New Post
+    </a>
+  </div>
+
+  {% if posts %}
+    <ul class="list-group mb-4">
+      {% for post in posts %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ post.title }}</span>
+          <div>
+            <a href="{{ url_for('edit_post', post_id=post.id) }}" class="btn btn-sm btn-warning me-2">
+              <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a href="{{ url_for('delete_post', post_id=post.id) }}" class="btn btn-sm btn-danger">
+              <i class="bi bi-trash"></i> Delete
+            </a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">You haven’t published any posts yet. Start writing now!</p>
+  {% endif %}
+
+  <h3 class="section-title">💬 Recent Comments on Your Posts</h3>
+  {% if comments %}
+    <ul class="list-group">
+      {% for comment in comments %}
+        <li class="list-group-item">
+          <span class="comment-user">{{ comment.user.name if comment.user else "Guest" }}:</span>
+          {{ comment.content }}
+          <small class="d-block text-muted">{{ comment.created_at.strftime('%Y-%m-%d') if comment.created_at else 'N/A' }}</small>
+          <small class="d-block text-muted">On <strong>{{ comment.post.title }}</strong></small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">No one has commented on your posts yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

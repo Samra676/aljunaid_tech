@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Admin - Manage Comments{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-lg border-0 rounded-4 px-4 py-5 bg-light">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold text-success mb-0">
+        <i class="bi bi-chat-dots-fill me-2"></i>Manage Comments
+      </h2>
+    </div>
+
+    {% if comments %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle shadow-sm rounded-3 overflow-hidden">
+        <thead class="table-success text-center text-dark">
+          <tr>
+            <th>#ID</th>
+            <th>Post</th>
+            <th>User</th>
+            <th>Comment</th>
+            <th>Created</th>
+            <th>Reported</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for comment in comments %}
+          <tr class="align-middle">
+            <td class="fw-semibold text-center">{{ comment.id }}</td>
+            <td>
+              {% if comment.post %}
+                <a href="{{ url_for('view_post', post_id=comment.post.id) }}" class="text-decoration-none fw-semibold text-primary">
+                  {{ comment.post.title }}
+                </a>
+              {% else %}
+                <span class="text-muted fst-italic">[Post Deleted]</span>
+              {% endif %}
+            </td>
+            <td>
+              <span class="fw-semibold">{{ comment.user.username if comment.user else 'Anonymous' }}</span>
+            </td>
+            <td>{{ comment.content }}</td>
+            <td>{{ comment.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              {% if comment.is_reported %}
+                <span class="badge bg-danger">Yes</span>
+              {% else %}
+                <span class="badge bg-secondary">No</span>
+              {% endif %}
+            </td>
+            <td>
+              <div class="d-flex gap-2 flex-wrap">
+                <a href="{{ url_for('delete_comment', id=comment.id) }}"
+                   class="btn btn-sm btn-outline-danger"
+                   onclick="return confirm('Delete this comment?');">
+                  <i class="bi bi-trash"></i>
+                </a>
+
+                {% if comment.is_reported %}
+                  <a href="{{ url_for('unreport_comment', id=comment.id) }}"
+                     class="btn btn-sm btn-outline-success">
+                    <i class="bi bi-flag-fill"></i> Unreport
+                  </a>
+                {% else %}
+                  <a href="{{ url_for('report_comment', comment_id=comment.id) }}"
+                     class="btn btn-sm btn-outline-warning">
+                    <i class="bi bi-flag"></i> Report
+                  </a>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+      <i class="bi bi-info-circle"></i> No comments found.
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
